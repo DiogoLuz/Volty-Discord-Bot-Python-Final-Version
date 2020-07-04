@@ -326,11 +326,14 @@ async def play(ctx,*,link="Nothing"):
 
                         await ctx.send(f"\u23F5 Now playing: \"{songName}\"")
 
+                        await client.change_presence(activity=discord.Game(songName))
+
     else:
         voiceConnection.play(source = discordAudioSource)
 
         await ctx.send("Resuming song")
 
+        await client.change_presence(activity=discord.Game(songName))
                 
 
     
@@ -341,11 +344,17 @@ async def stop(ctx):
 
     await ctx.send("Stopped playing")
 
+    game = discord.Game("Nikiera looks like Leshawna")
+    await client.change_presence(activity=game)
+
 @client.command()
 async def pause(ctx):
     voiceConnection.pause()
 
     await ctx.send("Paused song")
+
+    game = discord.Game("Nikiera looks like Leshawna")
+    await client.change_presence(activity=game)
 
 
 
