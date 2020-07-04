@@ -317,7 +317,7 @@ async def play(ctx,*,link="Nothing"):
 
                         voiceConnection.play(source = discordAudioSource)
 
-                        await ctx.send(f"\U0001F3B5 Now playing: \"{songName}\" \U0001F3B5")
+                        await ctx.send(f"\U0001F3B5  Now playing: \"{songName}\" \U0001F3B5")
 
                         await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
 
@@ -327,7 +327,7 @@ async def play(ctx,*,link="Nothing"):
 
                         voiceConnection.play(source = discordAudioSource)
 
-                        await ctx.send(f"\u23F5 Now playing: \"{songName}\"")
+                        await ctx.send(f"\U0001F3B5  Now playing: \"{songName}\"  \U0001F3B5")
 
                         await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
 
