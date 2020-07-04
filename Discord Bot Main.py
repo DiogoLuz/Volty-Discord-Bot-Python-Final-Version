@@ -362,6 +362,9 @@ async def pause(ctx):
 @client.command()
 
 async def disconnect(ctx):
+
+    global voiceConnection
+
     voiceConnection.disconnect()
 
     await ctx.send("Disconnected from Voice Channel!")
