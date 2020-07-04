@@ -265,6 +265,6 @@ async def currency(ctx, fromcurrency, tocurrency, amount):
 
 
 
-client.run("NjYzNDE2NjgxNjMyMTA0NDY4.XwAd_g.3BjrtsuvjHrIE1nYcmIv2fF3N84)
+client.run("NjYzNDE2NjgxNjMyMTA0NDY4.XwAd_g.3BjrtsuvjHrIE1nYcmIv2fF3N84")
 
 
