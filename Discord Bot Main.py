@@ -359,6 +359,13 @@ async def pause(ctx):
     game = discord.Game("Nikiera looks like Leshawna")
     await client.change_presence(activity=game)
 
+@client.command()
+
+async def disconnect(ctx):
+    voiceConnection.disconnect()
+
+    await ctx.send("Disconnected from Voice Channel!")
+
 
 
 
