@@ -295,9 +295,9 @@ async def play(ctx,*,link="Nothing"):
                 discordAudioSource = discord.FFmpegPCMAudio(song)
                 break
 
-        songName = song.split("-")
+        songName = song.filter(songID)
 
-        songName = songName[0]
+        songName = song.replace(".mp3", "")
 
 
         
