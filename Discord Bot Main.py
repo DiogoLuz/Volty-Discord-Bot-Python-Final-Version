@@ -267,6 +267,7 @@ async def currency(ctx, fromcurrency, tocurrency, amount):
 @client.command()
 async def play(ctx,*,link="Nothing"):
     if "https" in link and "http" in link:
+        await ctx.send("Loading song...")
         linkID = link.split("=")
 
         linkID = linkID[1]
@@ -316,7 +317,9 @@ async def play(ctx,*,link="Nothing"):
 
                         voiceConnection.play(source = discordAudioSource)
 
-                        await ctx.send(f"\u23F5 Now playing: \"{songName}\"")
+                        await ctx.send(f"\U0001F3B5 Now playing: \"{songName}\" \U0001F3B5")
+
+                        await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
 
                     except:
 
@@ -326,14 +329,14 @@ async def play(ctx,*,link="Nothing"):
 
                         await ctx.send(f"\u23F5 Now playing: \"{songName}\"")
 
-                        await client.change_presence(activity=discord.Game(songName))
+                        await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
 
     else:
         voiceConnection.play(source = discordAudioSource)
 
-        await ctx.send("Resuming song")
+        await ctx.send("Resuming song!")
 
-        await client.change_presence(activity=discord.Game(songName))
+        await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
                 
 
     
@@ -342,7 +345,7 @@ async def play(ctx,*,link="Nothing"):
 async def stop(ctx):
     voiceConnection.stop()
 
-    await ctx.send("Stopped playing")
+    await ctx.send("Stopped playing!")
 
     game = discord.Game("Nikiera looks like Leshawna")
     await client.change_presence(activity=game)
@@ -351,7 +354,7 @@ async def stop(ctx):
 async def pause(ctx):
     voiceConnection.pause()
 
-    await ctx.send("Paused song")
+    await ctx.send("\u23F8 Paused song!")
 
     game = discord.Game("Nikiera looks like Leshawna")
     await client.change_presence(activity=game)
