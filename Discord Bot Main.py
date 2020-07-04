@@ -8,7 +8,7 @@ import json
 import sys
 import youtube_dl
 import os
-import ffmpeg
+
 
 
 
@@ -319,6 +319,8 @@ async def play(ctx,*,link="Nothing"):
                         await ctx.send(f"\u23F5 Now playing: \"{songName}\"")
 
                     except:
+
+                        voiceConnection.stop()
 
                         voiceConnection.play(source = discordAudioSource)
 
