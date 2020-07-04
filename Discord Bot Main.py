@@ -266,7 +266,7 @@ async def currency(ctx, fromcurrency, tocurrency, amount):
 
 @client.command()
 async def play(ctx,*,link="Nothing"):
-    if "https" in link and "http" in link:
+    if "https" in link and "http" in link and "youtu.be" in link:
         linkID = link.split("=")
 
         linkID = linkID[1]
