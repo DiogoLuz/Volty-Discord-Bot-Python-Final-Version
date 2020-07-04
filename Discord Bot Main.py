@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import discord
 from discord.ext import commands, tasks
 import re
@@ -6,6 +7,7 @@ import requests
 import json
 import sys
 import youtube_dl
+import os
 
 
 
@@ -260,6 +262,92 @@ async def currency(ctx, fromcurrency, tocurrency, amount):
     exchangeCurrency = float(amount) * float(r)
 
     await ctx.send(f"{amount} {fromcurrency} is equal to {exchangeCurrency} {tocurrency}")
+
+@client.command()
+async def play(ctx,*,link="Nothing"):
+    if "https" in link and "http" in link:
+        linkID = link.split("=")
+
+        linkID = linkID[1]
+        ydl_opts = {'outtmpl':"%(title)s-%(id)s.%(ext)s",
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }] }
+
+
+
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([f'{link}'])
+
+
+        cacheDirectory = os.listdir()
+
+        print(cacheDirectory)
+
+        for song in cacheDirectory:
+            if linkID in song:
+                global discordAudioSource
+                
+                discordAudioSource = discord.FFmpegPCMAudio(song)
+                break
+
+        songName = song.split("-")
+
+        songName = songName[0]
+
+
+        
+
+
+        serverVoiceChannels = ctx.guild.voice_channels
+
+        for channel in serverVoiceChannels:
+            for member in channel.members:
+                if member.display_name == ctx.author.display_name:
+                    global voiceConnection 
+
+                
+                    try: 
+                        voiceConnection = await channel.connect()
+
+                        voiceConnection.play(source = discordAudioSource)
+
+                        await ctx.send(f"\u23F5 Now playing: \"{songName}\"")
+
+                    except:
+
+                        voiceConnection.play(source = discordAudioSource)
+
+                        await ctx.send(f"\u23F5 Now playing: \"{songName}\"")
+
+    else:
+        voiceConnection.play(source = discordAudioSource)
+
+        await ctx.send("Resuming song")
+
+                
+
+    
+
+@client.command()
+async def stop(ctx):
+    voiceConnection.stop()
+
+    await ctx.send("Stopped playing")
+
+@client.command()
+async def pause(ctx):
+    voiceConnection.pause()
+
+    await ctx.send("Paused song")
+
+
+
+
+    
 
 
 
