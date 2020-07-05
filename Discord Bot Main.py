@@ -267,51 +267,58 @@ async def currency(ctx, fromcurrency, tocurrency, amount):
 @client.command()
 async def play(ctx,*,link="Nothing"):
     if "https" in link or "http" in link or "youtu.be" in link:
+        try:
 
-        serverVoiceChannels = ctx.guild.voice_channels
+            serverQueues = os.mkdir("queues")
 
-        for channel in serverVoiceChannels:
-            for member in channel.members:
-                if member == ctx.author.name:
+            serverQueueDirectory = os.listdir("queues")
 
-                    global voiceConnection
+        except:
+            serverQueueDirectory = os.listdir("queues")
+            
+        try:
+            with open(f"queues\{ctx.guild.name}.txt", "r") as file:
+                lines = file.readlines()
 
-                    voiceConnection =  await channel.connect()
+                
+                nextSong = file.readline()
 
-
-        serverQueues = os.mkdir("queues")
-
-        serverQueueDirectory = os.listdir("queues")
-
-        with open(f"\queues\{ctx.guild.name}.txt", "r") as file:
-            lines = file.readlines()
-
-            nextSong = file.readline(0)
         
-        with open(f"\queues\{ctx.guild.name}.txt", "w") as file:
-            del lines[0]
+            with open(f"queues\{ctx.guild.name}.txt", "w") as file:
+                del lines[0]
 
-            file.write(lines)
+                file.write(lines)
+
+        except FileNotFoundError:
+            with open(f"queues\{ctx.guild.name}.txt", "w") as file:
+                pass
+
+            with open(f"queues\{ctx.guild.name}.txt", "a") as file:
+                file.write(f"{link} ")
+
 
         if "http" in link:
             link = link.replace("http://", "")
-            with open(f"\queues\{ctx.guild.name}.txt", "a") as file:
+            print(link)
+            with open(f"queues\{ctx.guild.name}.txt", "a") as file:
                 file.write(f"\n {link}")
    
 
 
-        elif "https" in link:
+        elif "https" in link: 
             link = link.replace("https://", "")
-            with open(f"\queues\{ctx.guild.name}.txt", "a") as file:
+            with open(f"queues\{ctx.guild.name}.txt", "a") as file:
                 file.write(f"\n {link}")
             
 
  
-    if "youtube" in nextSong and "https" in nextSong:
-           newSongLinkID = nextSong.replace("https://www.youtube.com/watch?v=", "")
+        #if "youtube" in nextSong and "https" in nextSong:
 
-    elif "youtu.be" in nextSong and "https" in nextSong:
-        newSongLinkID = nextSong.replace("https://youtu.be/", "")
+        #    global songID
+        #    songID = nextSong.replace("https://www.youtube.com/watch?v=", "")
+
+        #elif "youtu.be" in nextSong and "https" in nextSong:
+        #       songID = nextSong.replace("https://youtu.be/", "")
 
            
 
@@ -324,33 +331,74 @@ async def play(ctx,*,link="Nothing"):
 
 
 
-    ydl_opts = {'outtmpl':"%(title)s-%(id)s.%(ext)s",
-          'format': 'bestaudio/best',
-          'postprocessors': [{
-              'key': 'FFmpegExtractAudio',
-              'preferredcodec': 'mp3',
-              'preferredquality': '192',
-          }] }
+        #ydl_opts = {'outtmpl':"%(title)s-%(id)s.%(ext)s",
+        #      'format': 'bestaudio/best',
+        #      'postprocessors': [{
+        #          'key': 'FFmpegExtractAudio',
+        #          'preferredcodec': 'mp3',
+        #          'preferredquality': '192',
+        #      }] }
 
 
 
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-          ydl.download([f'{nextSong}'])
+        #with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        #      ydl.download([f'{nextSong}'])
 
-    cacheDirectory = os.listdir()
+        cacheDirectory = os.listdir()
 
-    print(cacheDirectory)
 
-    for song in cacheDirectory:
-         if nextSonglinkID in song:
-             global discordAudioSource
+
+        #for song in cacheDirectory:
+        #     if songID in song:
+        #         global discordAudioSource
                 
-             discordAudioSource = discord.FFmpegPCMAudio(song)
-             break
+        #         discordAudioSource = discord.FFmpegPCMAudio(song)
 
-    songName = song.replace(linkID, "")
+        #         songName = song.replace(linkID, "")
 
-    songName = song.replace(".mp3", "")
+        #         songName = song.replace(".mp3", "")
+        #         break
+
+            
+
+
+
+        #serverVoiceChannels = ctx.guild.voice_channels
+
+        #for channel in serverVoiceChannels:
+        #    for member in channel.members:
+        #          if member.display_name == ctx.author.display_name:
+
+
+        #            global voiceConnection
+
+                
+        #              try: 
+        #                    global voiceConnection
+        #                    voiceConnection = await channel.connect()
+
+        #                    voiceConnection.play(source = discordAudioSource)
+
+        #                    await ctx.send(f"\U0001F3B5  Now playing: \"{songName}\" \U0001F3B5")
+
+        #                    await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
+
+        #              except:
+        #                    voiceConnection.stop()
+
+        #                    voiceConnection.play(source = discordAudioSource)
+
+        #                    await ctx.send(f"\U0001F3B5  Now playing: \"{songName}\"  \U0001F3B5")
+
+        #                    await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
+
+        #    else:
+        #        voiceConnection.play(source = discordAudioSource)
+
+        #        await ctx.send("Resuming song!")
+
+        #        await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
+                
 
 
 
