@@ -267,6 +267,18 @@ async def currency(ctx, fromcurrency, tocurrency, amount):
 @client.command()
 async def play(ctx,*,link="Nothing"):
     if "https" in link or "http" in link or "youtu.be" in link:
+
+        serverVoiceChannels = ctx.guild.voice_channels
+
+        for channel in serverVoiceChannels:
+            for member in channel.members:
+                if member == ctx.author.name:
+
+                    global voiceConnection
+
+                    voiceConnection =  await channel.connect()
+
+
         serverQueues = os.mkdir("queues")
 
         serverQueueDirectory = os.listdir("queues")
@@ -283,9 +295,18 @@ async def play(ctx,*,link="Nothing"):
 
         if "http" in link:
             link = link.replace("http://", "")
+            with open(f"\queues\{ctx.guild.name}.txt", "a") as file:
+                file.write(f"\n {link}")
+            
 
             if "youtube" in link:
                 linkID = link.replace("www.youtube.com/watch?v=", "")
+
+                
+                
+                            
+
+
            
 
             elif "youtu.be" in link:
@@ -294,6 +315,9 @@ async def play(ctx,*,link="Nothing"):
 
         elif "https" in link:
             link = link.replace("https://", "")
+            with open(f"\queues\{ctx.guild.name}.txt", "a") as file:
+                file.write(f"\n {link}")
+            
 
             if "youtube" in link:
                 linkID = link.replace("www.youtube.com/watch?v=", "")
@@ -301,6 +325,24 @@ async def play(ctx,*,link="Nothing"):
 
             elif "youtu.be" in link:
                 linkID = link.replace("youtu.be/", "")
+
+        ydl_opts = {'outtmpl':"%(title)s-%(id)s.%(ext)s",
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }] }
+
+
+
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([f'{nextSong}'])
+
+
+        songSource = discord.FFmpegPCMAudio()
+
+
 
         
 
