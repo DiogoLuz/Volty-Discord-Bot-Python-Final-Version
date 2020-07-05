@@ -369,6 +369,14 @@ async def disconnect(ctx):
 
     await ctx.send("Disconnected from Voice Channel!")
 
+@client.command()
+
+async def hangman(ctx,*, keyword="start"):
+    if keyword == "start":
+        dmConversation = await ctx.author.create_dm()
+
+        await dmConversation.send("What is your hangman word? Shhhh, don't tell anyone!")
+
 
 
 
