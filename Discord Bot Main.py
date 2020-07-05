@@ -365,7 +365,7 @@ async def disconnect(ctx):
 
     global voiceConnection
 
-    voiceConnection.disconnect()
+    await voiceConnection.disconnect()
 
     await ctx.send("Disconnected from Voice Channel!")
 
