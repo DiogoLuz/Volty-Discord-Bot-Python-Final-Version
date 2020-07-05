@@ -369,36 +369,44 @@ async def disconnect(ctx):
 
     await ctx.send("Disconnected from Voice Channel!")
 
+class game(commands.Cog):
+        def __init__(self):
+            self.secretWord = ""
+        
+
+        @commands.Cog.listener()
+        async def on_message(self, message):
+            if isinstance(message.channel, discord.DMChannel):
+                self.saidWord = message.content
+                if message.author.bot == False:
+                    for word in self.saidWord:
+                        self.secretWord = self.secretWord + word.replace(word, "-")
+
+                
+            
+                    await self.channel.send(f"{message.author.name} has submitted his secret word! It's {self.secretWord}")
+
+                else:
+                    pass
+
+        @client.command()
+        async def hangman(self, ctx):
+            textEmbed = discord.Embed(title="Game of Hangman has started!", description="Type v!hangman start to play!")
+
+            await ctx.send(embed=textEmbed)
+
+            self.channel = ctx.channel
+
+            self.privateMessage = await ctx.author.create_dm()
+
+            await self.privateMessage.send("What is your hangman word? Shhhh, don't tell anyone!")
+
+            
 
 
-async def on_message(message):
-    if isinstance(message.channel, discord.DMChannel):
-        saidWord = message.content
-        if message.author.bot == False:
-            global secretWord
-            secretWord = ""
-            for word in saidWord:
-                secretWord = secretWord + word.replace(word, "-")
-
-            await message.channel.send(secretWord)
-
-        else:
-            pass
-
-
-@client.command()
-async def hangman(ctx):
-    global secretWord
-    secretWord = secretWord
-    privateMessage = await ctx.author.create_dm()
-
-      
-
-    await privateMessage.send("What is your hangman word? Shhhh, don't tell anyone!")
-
-    await ctx.send(f"{ctx.author} has submitted his secret word! It's {secretWord}")
-
-client.add_listener(on_message)
+   
+client.remove_command("hangman")
+client.add_cog(game())
 
 @client.command()
 async def porny(ctx,*, member:discord.Member):
