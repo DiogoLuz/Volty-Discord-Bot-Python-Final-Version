@@ -339,8 +339,23 @@ async def play(ctx,*,link="Nothing"):
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([f'{nextSong}'])
 
+        cacheDirectory = os.listdir()
 
-        songSource = discord.FFmpegPCMAudio()
+        print(cacheDirectory)
+
+        for song in cacheDirectory:
+            if linkID in song:
+                global discordAudioSource
+                
+                discordAudioSource = discord.FFmpegPCMAudio(song)
+                break
+
+        songName = song.replace(linkID, "")
+
+        songName = song.replace(".mp3", "")
+
+
+        
 
 
 
