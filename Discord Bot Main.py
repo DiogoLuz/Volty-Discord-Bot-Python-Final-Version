@@ -297,20 +297,7 @@ async def play(ctx,*,link="Nothing"):
             link = link.replace("http://", "")
             with open(f"\queues\{ctx.guild.name}.txt", "a") as file:
                 file.write(f"\n {link}")
-            
-
-            if "youtube" in link:
-                linkID = link.replace("www.youtube.com/watch?v=", "")
-
-                
-                
-                            
-
-
-           
-
-            elif "youtu.be" in link:
-                linkID = link.replace("youtu.be/", "")
+   
 
 
         elif "https" in link:
@@ -319,40 +306,53 @@ async def play(ctx,*,link="Nothing"):
                 file.write(f"\n {link}")
             
 
-            if "youtube" in link:
-                linkID = link.replace("www.youtube.com/watch?v=", "")
+ 
+    if "youtube" in nextSong and "https" in nextSong:
+           newSongLinkID = nextSong.replace("https://www.youtube.com/watch?v=", "")
+
+    elif "youtu.be" in nextSong and "https" in nextSong:
+        newSongLinkID = nextSong.replace("https://youtu.be/", "")
+
            
 
-            elif "youtu.be" in link:
-                linkID = link.replace("youtu.be/", "")
-
-        ydl_opts = {'outtmpl':"%(title)s-%(id)s.%(ext)s",
-            'format': 'bestaudio/best',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }] }
 
 
 
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([f'{nextSong}'])
 
-        cacheDirectory = os.listdir()
 
-        print(cacheDirectory)
+        
 
-        for song in cacheDirectory:
-            if linkID in song:
-                global discordAudioSource
+
+
+    ydl_opts = {'outtmpl':"%(title)s-%(id)s.%(ext)s",
+          'format': 'bestaudio/best',
+          'postprocessors': [{
+              'key': 'FFmpegExtractAudio',
+              'preferredcodec': 'mp3',
+              'preferredquality': '192',
+          }] }
+
+
+
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+          ydl.download([f'{nextSong}'])
+
+    cacheDirectory = os.listdir()
+
+    print(cacheDirectory)
+
+    for song in cacheDirectory:
+         if nextSonglinkID in song:
+             global discordAudioSource
                 
-                discordAudioSource = discord.FFmpegPCMAudio(song)
-                break
+             discordAudioSource = discord.FFmpegPCMAudio(song)
+             break
 
-        songName = song.replace(linkID, "")
+    songName = song.replace(linkID, "")
 
-        songName = song.replace(".mp3", "")
+    songName = song.replace(".mp3", "")
+
+
 
 
         
