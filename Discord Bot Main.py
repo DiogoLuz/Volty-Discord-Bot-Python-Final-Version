@@ -363,8 +363,6 @@ async def pause(ctx):
 
 async def disconnect(ctx):
 
-    global voiceConnection
-
     await voiceConnection.disconnect()
 
     await ctx.send("Disconnected from Voice Channel!")
