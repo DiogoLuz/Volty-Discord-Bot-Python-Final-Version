@@ -369,19 +369,46 @@ async def disconnect(ctx):
 
     await ctx.send("Disconnected from Voice Channel!")
 
+
+
+async def on_message(message):
+    if isinstance(message.channel, discord.DMChannel):
+        saidWord = message.content
+        if message.author.bot == False:
+            global secretWord
+            secretWord = ""
+            for word in saidWord:
+                secretWord = secretWord + word.replace(word, "-")
+
+            await message.channel.send(secretWord)
+
+        else:
+            pass
+
+
 @client.command()
+async def hangman(ctx):
+    global secretWord
+    secretWord = secretWord
+    privateMessage = await ctx.author.create_dm()
 
-async def hangman(ctx,*, keyword="start"):
-    if keyword == "start":
-        dmConversation = await ctx.author.create_dm()
+      
 
-        await dmConversation.send("What is your hangman word? Shhhh, don't tell anyone!")
+    await privateMessage.send("What is your hangman word? Shhhh, don't tell anyone!")
 
+    await ctx.send(f"{ctx.author} has submitted his secret word! It's {secretWord}")
 
+client.add_listener(on_message)
 
+@client.command()
+async def porny(ctx,*, member:discord.Member):
+    emojis = ctx.guild.emojis
 
-    
-
+    for emoji in emojis:
+        if emoji.name == "Arjhay":
+            arjhayEmoji = emoji
+        
+    await ctx.send(f"STOP BEING PORNY {member} {emoji}")
 
 
 
