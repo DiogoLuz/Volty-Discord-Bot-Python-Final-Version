@@ -267,76 +267,49 @@ async def currency(ctx, fromcurrency, tocurrency, amount):
 @client.command()
 async def play(ctx,*,link="Nothing"):
     if "https" in link or "http" in link or "youtu.be" in link:
-        await ctx.send("Loading song...")
-        linkID = link.split("=")
+        serverQueues = os.mkdir("queues")
 
-        linkID = linkID[1]
-        ydl_opts = {'outtmpl':"%(title)s-%(id)s.%(ext)s",
-            'format': 'bestaudio/best',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }] }
+        serverQueueDirectory = os.listdir("queues")
+
+        with open(f"\queues\{ctx.guild.name}.txt", "r") as file:
+            lines = file.readlines()
+
+            nextSong = file.readline(0)
+        
+        with open(f"\queues\{ctx.guild.name}.txt", "w") as file:
+            del lines[0]
+
+            file.write(lines)
+
+        if "http" in link:
+            link = link.replace("http://", "")
+
+            if "youtube" in link:
+                linkID = link.replace("www.youtube.com/watch?v=", "")
+           
+
+            elif "youtu.be" in link:
+                linkID = link.replace("youtu.be/", "")
 
 
+        elif "https" in link:
+            link = link.replace("https://", "")
 
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([f'{link}'])
+            if "youtube" in link:
+                linkID = link.replace("www.youtube.com/watch?v=", "")
+           
 
-
-        cacheDirectory = os.listdir()
-
-        print(cacheDirectory)
-
-        for song in cacheDirectory:
-            if linkID in song:
-                global discordAudioSource
-                
-                discordAudioSource = discord.FFmpegPCMAudio(song)
-                break
-
-        songName = song.replace(linkID, "")
-
-        songName = song.replace(".mp3", "")
-
+            elif "youtu.be" in link:
+                linkID = link.replace("youtu.be/", "")
 
         
 
 
-        serverVoiceChannels = ctx.guild.voice_channels
+            
 
-        for channel in serverVoiceChannels:
-            for member in channel.members:
-                if member.display_name == ctx.author.display_name:
-                    global voiceConnection 
 
-                
-                    try: 
-                        voiceConnection = await channel.connect()
+            
 
-                        voiceConnection.play(source = discordAudioSource)
-
-                        await ctx.send(f"\U0001F3B5  Now playing: \"{songName}\" \U0001F3B5")
-
-                        await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
-
-                    except:
-
-                        voiceConnection.stop()
-
-                        voiceConnection.play(source = discordAudioSource)
-
-                        await ctx.send(f"\U0001F3B5  Now playing: \"{songName}\"  \U0001F3B5")
-
-                        await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
-
-    else:
-        voiceConnection.play(source = discordAudioSource)
-
-        await ctx.send("Resuming song!")
-
-        await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
                 
 
     
