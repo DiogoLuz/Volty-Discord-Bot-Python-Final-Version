@@ -316,7 +316,7 @@ async def fiverr(ctx):
 
 
 
-@commands.command()
+@client.command()
 async def porn(ctx,*, video):
     api = PornhubApi()
 
@@ -325,6 +325,8 @@ async def porn(ctx,*, video):
     data = data.videos[0]
 
     await ctx.send(f"{data.title}: {data.url}")
+
+
 
        
 
