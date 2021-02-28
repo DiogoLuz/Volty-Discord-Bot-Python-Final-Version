@@ -8,6 +8,10 @@ import json
 import sys
 import youtube_dl
 import os
+import random
+import asyncio
+from pornhub_api import PornhubApi
+from pornhub_api.backends.aiohttp import AioHttpBackend
 
 
 
@@ -19,11 +23,16 @@ client = commands.Bot(command_prefix = "v!")
 async def on_ready():
     print("Bot is ready!")
 
-    game = discord.Game("Nikiera looks like Leshawna")
+    game = discord.Game("You could have something like this in your server!")
     await client.change_presence(activity=game)
 
    
     
+
+@client.command()
+
+async def buyme(ctx):
+    await ctx.send("Hello! You could have something like this in your server!")
 
 
 
@@ -64,7 +73,7 @@ async def unban_error(ctx, error):
     
 
 @client.command()
-@commands.has_guild_permissions(manage_messages = True)
+#@commands.has_guild_permissions(manage_messages = True)
 async def clear(ctx, amount = 5):
     await ctx.channel.purge(limit=amount)
     await ctx.send(f"Successfully cleared {amount} message(s)!")
@@ -265,83 +274,6 @@ async def currency(ctx, fromcurrency, tocurrency, amount):
     await ctx.send(f"{amount} {fromcurrency} is equal to {exchangeCurrency} {tocurrency}")
 
 @client.command()
-async def play(ctx,*,link="Nothing"):
-    if "https" in link or "http" in link or "youtu.be" in link:
-        await ctx.send("Loading song...")
-        linkID = link.split("=")
-
-        linkID = linkID[1]
-        ydl_opts = {'outtmpl':"%(title)s-%(id)s.%(ext)s",
-            'format': 'bestaudio/best',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }] }
-
-
-
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([f'{link}'])
-
-
-        cacheDirectory = os.listdir()
-
-        print(cacheDirectory)
-
-        for song in cacheDirectory:
-            if linkID in song:
-                global discordAudioSource
-                
-                discordAudioSource = discord.FFmpegPCMAudio(song)
-                break
-
-        songName = song.replace(linkID, "")
-
-        songName = song.replace(".mp3", "")
-
-
-        
-
-
-        serverVoiceChannels = ctx.guild.voice_channels
-
-        for channel in serverVoiceChannels:
-            for member in channel.members:
-                if member.display_name == ctx.author.display_name:
-                    global voiceConnection 
-
-                
-                    try: 
-                        voiceConnection = await channel.connect()
-
-                        voiceConnection.play(source = discordAudioSource)
-
-                        await ctx.send(f"\U0001F3B5  Now playing: \"{songName}\" \U0001F3B5")
-
-                        await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
-
-                    except:
-
-                        voiceConnection.stop()
-
-                        voiceConnection.play(source = discordAudioSource)
-
-                        await ctx.send(f"\U0001F3B5  Now playing: \"{songName}\"  \U0001F3B5")
-
-                        await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
-
-    else:
-        voiceConnection.play(source = discordAudioSource)
-
-        await ctx.send("Resuming song!")
-
-        await client.change_presence(activity=discord.Game(f"Now Playing: {songName}"))
-                
-
-    
-
-@client.command()
 async def stop(ctx):
     voiceConnection.stop()
 
@@ -377,9 +309,38 @@ async def porny(ctx,*, member:discord.Member):
         
     await ctx.send(f"STOP BEING PORNY {member} {emoji}")
 
+@client.command()
+async def porny(ctx,*, member:discord.Member):
+    await ctx.send(f"STOP BEING PORNY {member}!")
+
+@client.command()
+async def say(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.send(message)
+
+@client.command()
+async def fiverr(ctx):
+    await ctx.message.delete()
+    await ctx.send("Hi I'm a bot Emeraldos made! It can do all sorts of things like play music, play games, mute people, send gifs, and many more!")
+    await ctx.send("If you want something like this, request me to do one for you on fiverr - all for cheap prices!")
 
 
-    
+
+@commands.command()
+async def porn(ctx,*, video):
+    api = PornhubApi()
+
+    data = api.search.search(video, ordering="mostviewed")
+
+    data = data.videos[0]
+
+    await ctx.send(f"{data.title}: {data.url}")
+
+       
+
+
+
+
 
 
 
