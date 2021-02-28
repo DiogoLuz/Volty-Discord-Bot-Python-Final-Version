@@ -341,3 +341,28 @@ async def porn(ctx,*, video):
 client.run("NjYzNDE2NjgxNjMyMTA0NDY4.XwAd_g.3BjrtsuvjHrIE1nYcmIv2fF3N84")
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
