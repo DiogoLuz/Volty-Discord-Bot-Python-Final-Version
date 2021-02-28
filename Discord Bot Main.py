@@ -301,16 +301,6 @@ async def disconnect(ctx):
 
 @client.command()
 async def porny(ctx,*, member:discord.Member):
-    emojis = ctx.guild.emojis
-
-    for emoji in emojis:
-        if emoji.name == "Arjhay":
-            arjhayEmoji = emoji
-        
-    await ctx.send(f"STOP BEING PORNY {member} {emoji}")
-
-@client.command()
-async def porny(ctx,*, member:discord.Member):
     await ctx.send(f"STOP BEING PORNY {member}!")
 
 @client.command()
