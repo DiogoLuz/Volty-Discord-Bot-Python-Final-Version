@@ -12,6 +12,7 @@ import random
 import asyncio
 from pornhub_api import PornhubApi
 from pornhub_api.backends.aiohttp import AioHttpBackend
+from photoCog import pictureCog
 
 
 
@@ -325,6 +326,22 @@ async def porn(ctx,*, video):
     data = data.videos[0]
 
     await ctx.send(f"{data.title}: {data.url}")
+
+
+client.add_cog(pictureCog())
+
+
+
+       
+
+            
+
+ 
+
+
+
+
+
 
 
 
