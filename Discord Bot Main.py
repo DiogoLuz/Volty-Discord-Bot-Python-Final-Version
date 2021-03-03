@@ -13,6 +13,7 @@ import asyncio
 from pornhub_api import PornhubApi
 from pornhub_api.backends.aiohttp import AioHttpBackend
 from photoCog import pictureCog
+from musicCog import musicCog
 
 
 
@@ -292,13 +293,8 @@ async def pause(ctx):
     game = discord.Game("Nikiera looks like Leshawna")
     await client.change_presence(activity=game)
 
-@client.command()
 
-async def disconnect(ctx):
 
-    await voiceConnection.disconnect()
-
-    await ctx.send("Disconnected from Voice Channel!")
 
 @client.command()
 async def porny(ctx,*, member:discord.Member):
@@ -329,6 +325,8 @@ async def porn(ctx,*, video):
 
 
 client.add_cog(pictureCog())
+
+client.add_cog(musicCog())
 
 
 
